@@ -7,6 +7,4 @@
 
 import UIKit
 
-final class ArticleTableViewCell: UITableViewCell {
-    
-}
+final class ArticleTableViewCell: UITableViewCell {}
