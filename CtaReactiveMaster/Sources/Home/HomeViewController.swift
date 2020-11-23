@@ -9,20 +9,24 @@ import UIKit
 
 final class HomeViewController: UIViewController {
 
-    @IBOutlet weak var articleTableView: UITableView!
+    @IBOutlet private weak var articleTableView: UITableView! {
+        didSet {
+            articleTableView.delegate = self
+            articleTableView.dataSource = self
+            articleTableView.register(UINib(nibName: "ArticleTableViewCell", bundle: nil), forCellReuseIdentifier: "ArticleTableViewCell")
+        }
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        articleTableView.delegate = self
-        articleTableView.dataSource = self
-        articleTableView.register(UINib(nibName: "ArticleTableViewCell", bundle: nil), forCellReuseIdentifier: "ArticleTableViewCell")
+        
     }
 }
 
-extension HomeViewController:UITableViewDelegate, UITableViewDataSource{
+extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 10
+        10
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
