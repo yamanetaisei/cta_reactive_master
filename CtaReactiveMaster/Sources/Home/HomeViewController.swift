@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Alamofire
 
 final class HomeViewController: UIViewController {
 
@@ -19,6 +20,7 @@ final class HomeViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        fetchArticles()
     }
 }
 
@@ -30,5 +32,18 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "ArticleTableViewCell", for: indexPath) as! ArticleTableViewCell
         return cell
+    }
+    
+    func fetchArticles() {
+        let request = AF.request("http://newsapi.org/v2/everything?q=bitcoin&from=2020-10-29&sortBy=publishedAt&apiKey=30d06e4f9a934402a204fa89f9d9acfc")
+        
+        request.responseJSON { (data) in
+            switch data.result {
+            case .success(let data ):
+                print(data)
+            case .failure(let error):
+                print(error)
+            }
+        }
     }
 }
