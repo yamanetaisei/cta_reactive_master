@@ -11,7 +11,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="HomeViewController" customModule="CtaReactiveMaster" customModuleProvider="target">
             <connections>
-                <outlet property="articleTableView" destination="VPI-Ad-z1B" id="5Px-rp-hGv"/>
+                <outlet property="tableView" destination="VPI-Ad-z1B" id="a81-qe-qbx"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
