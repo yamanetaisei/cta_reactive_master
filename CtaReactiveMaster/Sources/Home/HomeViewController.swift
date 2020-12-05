@@ -8,6 +8,12 @@
 import UIKit
 import Alamofire
 
+struct Hoge {
+    func call() {
+        print("hoge")
+    }
+}
+
 final class HomeViewController: UIViewController {
 
     @IBOutlet private weak var tableView: UITableView! {
@@ -18,10 +24,21 @@ final class HomeViewController: UIViewController {
         }
     }
     private var articles:[Article] = .init()
+    private let hoge: Hoge
+    
+    init(hoge: Hoge) {
+        self.hoge = hoge
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         fetchArticles()
+        hoge.call()
     }
 }
 
