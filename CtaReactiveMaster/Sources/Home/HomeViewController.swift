@@ -17,7 +17,7 @@ final class HomeViewController: UIViewController {
             tableView.register(UINib(nibName: "ArticleTableViewCell", bundle: nil), forCellReuseIdentifier: "ArticleTableViewCell")
         }
     }
-    private var articles:[Article] = .init()
+    private var articles: [Article] = .init()
     private let apiClient: APIClient
     
     init(apiClient:APIClient) {
@@ -31,8 +31,10 @@ final class HomeViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        fetchArticles()
-        apiClient.call()
+        apiClient.fetchArticles { [weak  self] articles in
+            self?.articles = articles
+            self?.tableView.reloadData()
+        }
     }
 }
 
@@ -45,26 +47,5 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
         let cell = tableView.dequeueReusableCell(withIdentifier: "ArticleTableViewCell", for: indexPath) as! ArticleTableViewCell
         cell.textLabel?.text = articles[indexPath.row].title
         return cell
-    }
-    
-    func fetchArticles() {
-        let request = AF.request("http://newsapi.org/v2/everything?q=bitcoin&from=2020-10-30&sortBy=publishedAt&apiKey=30d06e4f9a934402a204fa89f9d9acfc")
-        let decoder = JSONDecoder()
-        decoder.dateDecodingStrategy = .iso8601
-        request.response { [weak self] response in
-            switch response.result {
-            case .success(let data):
-                guard let data = data else { return }
-                do {
-                    let decodeData = try decoder.decode(NewsDataModel.self, from: data)
-                    self?.articles = decodeData.articles
-                } catch {
-                    print(error)
-                }
-            case .failure(let error):
-                print(error)
-            }
-            self?.tableView.reloadData()
-        }
     }
 }
