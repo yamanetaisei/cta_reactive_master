@@ -9,7 +9,7 @@ import Foundation
 
 struct NewsDataModel: Decodable {
     let status: String
-    let totalResults: Int
+    let totalResults: Int?
     let articles: [Article]
 }
 
