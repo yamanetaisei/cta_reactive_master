@@ -5,6 +5,8 @@ target 'CtaReactiveMaster' do
 
   pod 'Nuke'
   pod 'Alamofire'
+  pod 'RxSwift'
+  pod 'RxCocoa'
   
   target 'CtaReactiveMasterTests' do
     inherit! :search_paths

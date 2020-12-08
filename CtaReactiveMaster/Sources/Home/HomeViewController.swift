@@ -7,6 +7,7 @@
 
 import UIKit
 import Alamofire
+import RxSwift
 
 final class HomeViewController: UIViewController {
 
@@ -19,6 +20,7 @@ final class HomeViewController: UIViewController {
     }
     private var articles: [Article] = .init()
     private let apiClient: APIClient
+    private let disposeBag = DisposeBag()
     
     init(apiClient:APIClient) {
         self.apiClient = apiClient
@@ -31,10 +33,15 @@ final class HomeViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        apiClient.fetchArticles { [weak  self] articles in
-            self?.articles = articles
-            self?.tableView.reloadData()
-        }
+        apiClient.fetchArticles()
+            .observeOn(MainScheduler.instance)
+            .subscribe { [weak self] articles in
+                self?.articles = articles
+                self?.tableView.reloadData()
+            } onError: { error in
+                print(error)
+            }
+            .disposed(by: disposeBag)
     }
 }
 
