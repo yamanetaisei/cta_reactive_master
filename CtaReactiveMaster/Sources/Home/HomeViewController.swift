@@ -16,14 +16,14 @@ final class HomeViewController: UIViewController {
             tableView.delegate = self
             tableView.dataSource = self
             tableView.register(UINib(nibName: "ArticleTableViewCell", bundle: nil), forCellReuseIdentifier: "ArticleTableViewCell")
-            tableView.refreshControl = refreshCtl
-            refreshCtl.addTarget(self, action: #selector(HomeViewController.refresh(sender:)), for: .valueChanged)
+            tableView.refreshControl = refreshControl
+            refreshControl.addTarget(self, action: #selector(HomeViewController.refresh(sender:)), for: .valueChanged)
         }
     }
     private var articles: [Article] = .init()
     private let apiClient: APIClient
     private let disposeBag = DisposeBag()
-    private let refreshCtl = UIRefreshControl()
+    private let refreshControl = UIRefreshControl()
     
     init(apiClient:APIClient) {
         self.apiClient = apiClient
@@ -47,14 +47,14 @@ final class HomeViewController: UIViewController {
             .disposed(by: disposeBag)
     }
     
-    @objc func refresh(sender: UIRefreshControl) {
-        print("くるくる")
+    @objc
+    func refresh(sender: UIRefreshControl) {
         apiClient.fetchArticles()
             .observeOn(MainScheduler.instance)
             .subscribe { [weak self] articles in
                 self?.articles = articles
                 self?.tableView.reloadData()
-                self?.refreshCtl.endRefreshing()
+                self?.refreshControl.endRefreshing()
             } onError: { error in
                 print(error)
             }
