@@ -8,6 +8,7 @@
 import UIKit
 import Alamofire
 import RxSwift
+import RxCocoa
 
 final class HomeViewController: UIViewController {
 
@@ -17,7 +18,6 @@ final class HomeViewController: UIViewController {
             tableView.dataSource = self
             tableView.register(UINib(nibName: "ArticleTableViewCell", bundle: nil), forCellReuseIdentifier: "ArticleTableViewCell")
             tableView.refreshControl = refreshControl
-            refreshControl.addTarget(self, action: #selector(HomeViewController.refresh(sender:)), for: .valueChanged)
         }
     }
     private var articles: [Article] = .init()
@@ -45,10 +45,18 @@ final class HomeViewController: UIViewController {
                 print(error)
             }
             .disposed(by: disposeBag)
+        
+        refreshControl.rx.controlEvent(.valueChanged)
+            .subscribe(onNext: { [weak self] in
+                self?.refresh()
+            },
+            onError: { error in
+                print(error)
+            })
+            .disposed(by: disposeBag)
     }
     
-    @objc
-    func refresh(sender: UIRefreshControl) {
+    func refresh() {
         apiClient.fetchArticles()
             .observeOn(MainScheduler.instance)
             .subscribe { [weak self] articles in
