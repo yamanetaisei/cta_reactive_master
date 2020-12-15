@@ -36,19 +36,11 @@ final class HomeViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        apiClient.fetchArticles()
-            .observeOn(MainScheduler.instance)
-            .subscribe { [weak self] articles in
-                self?.articles = articles
-                self?.tableView.reloadData()
-            } onError: { error in
-                print(error)
-            }
-            .disposed(by: disposeBag)
+        fetch()
         
         refreshControl.rx.controlEvent(.valueChanged)
             .subscribe(onNext: { [weak self] in
-                self?.refresh()
+                self?.fetch()
             },
             onError: { error in
                 print(error)
@@ -56,13 +48,15 @@ final class HomeViewController: UIViewController {
             .disposed(by: disposeBag)
     }
     
-    func refresh() {
+    func fetch() {
         apiClient.fetchArticles()
             .observeOn(MainScheduler.instance)
             .subscribe { [weak self] articles in
                 self?.articles = articles
                 self?.tableView.reloadData()
-                self?.refreshControl.endRefreshing()
+                if ((self?.refreshControl.isRefreshing) != nil){
+                    self?.refreshControl.endRefreshing()
+                }
             } onError: { error in
                 print(error)
             }
