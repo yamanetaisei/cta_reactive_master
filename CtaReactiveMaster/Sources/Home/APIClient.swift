@@ -9,8 +9,7 @@ import Foundation
 import Alamofire
 import RxSwift
 
-struct APIClient {
-    
+struct APIClient {    
     private let decoder: JSONDecoder = {
         let decoder = JSONDecoder()
         decoder.dateDecodingStrategy = .iso8601
