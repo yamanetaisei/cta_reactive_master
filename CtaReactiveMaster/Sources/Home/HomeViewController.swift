@@ -54,7 +54,7 @@ final class HomeViewController: UIViewController {
             .subscribe { [weak self] articles in
                 self?.articles = articles
                 self?.tableView.reloadData()
-                if ((self?.refreshControl.isRefreshing) != nil){
+                if self?.refreshControl.isRefreshing == true {
                     self?.refreshControl.endRefreshing()
                 }
             } onError: { error in
