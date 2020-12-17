@@ -16,9 +16,9 @@ struct APIClient {
         return decoder
     }()
     
-    func fetchArticles() -> Observable<[Article]> {
+    func fetchArticles(_ requestable: UrlGetter) -> Observable<[Article]> {
         Observable<[Article]>.create { observer in
-            let request = AF.request("http://newsapi.org/v2/everything?q=bitcoin&sortBy=publishedAt&apiKey=30d06e4f9a934402a204fa89f9d9acfc")
+            let request = AF.request(requestable.url)
             request.response { response in
                 switch response.result {
                 case .success(let data):

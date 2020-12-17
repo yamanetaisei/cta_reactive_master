@@ -49,7 +49,7 @@ final class HomeViewController: UIViewController {
     }
     
     func fetch() {
-        apiClient.fetchArticles()
+        apiClient.fetchArticles(BitcoinNewsAPI())
             .observeOn(MainScheduler.instance)
             .subscribe { [weak self] articles in
                 self?.articles = articles
