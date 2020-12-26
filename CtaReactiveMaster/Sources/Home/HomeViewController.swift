@@ -21,12 +21,12 @@ final class HomeViewController: UIViewController {
         }
     }
     private var articles: [Article] = .init()
-    private let apiClient: APIClient
     private let disposeBag = DisposeBag()
     private let refreshControl = UIRefreshControl()
+    private let repository: NewsArticleRepository
     
-    init(apiClient:APIClient) {
-        self.apiClient = apiClient
+    init(repository: NewsArticleRepository) {
+        self.repository = repository
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -37,7 +37,7 @@ final class HomeViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         fetch()
-        
+
         refreshControl.rx.controlEvent(.valueChanged)
             .subscribe(onNext: { [weak self] in
                 self?.fetch()
@@ -48,14 +48,15 @@ final class HomeViewController: UIViewController {
             .disposed(by: disposeBag)
     }
     
-    func fetch() {
-        apiClient.fetchArticles(BitcoinNewsAPI())
+    private func fetch() {
+        repository.fetch()
             .observeOn(MainScheduler.instance)
-            .subscribe { [weak self] articles in
-                self?.articles = articles
-                self?.tableView.reloadData()
-                if self?.refreshControl.isRefreshing == true {
-                    self?.refreshControl.endRefreshing()
+            .subscribe { [weak self] response in
+                guard let self = self else { return }
+                self.articles = response.articles
+                self.tableView.reloadData()
+                if self.refreshControl.isRefreshing {
+                    self.refreshControl.endRefreshing()
                 }
             } onError: { error in
                 print(error)
