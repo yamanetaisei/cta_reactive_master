@@ -101,6 +101,41 @@
 			path = Entities;
 			sourceTree = "<group>";
 		};
+		6A8667672598D0DD00FE8031 /* APIClient */ = {
+			isa = PBXGroup;
+			children = (
+				6A6DC2FA25963EF600191F29 /* NewsAPIRequest.swift */,
+				6A6DC2FE25973B0B00191F29 /* Requestable.swift */,
+				6AA0A2512579181900A99393 /* APIClient.swift */,
+			);
+			path = APIClient;
+			sourceTree = "<group>";
+		};
+		6A8667682598D12500FE8031 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				6A92D40A25728F3200256220 /* NewsDataModel.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		6A8667692598D16F00FE8031 /* Repository */ = {
+			isa = PBXGroup;
+			children = (
+				6A5F2E89257D13C200D5DB4A /* NewsArticleRepository.swift */,
+			);
+			path = Repository;
+			sourceTree = "<group>";
+		};
+		6A86676A2598D1AD00FE8031 /* Cell */ = {
+			isa = PBXGroup;
+			children = (
+				6ACDDDC1256BE65F004E12E3 /* ArticleTableViewCell.swift */,
+				6ACDDDC2256BE65F004E12E3 /* ArticleTableViewCell.xib */,
+			);
+			path = Cell;
+			sourceTree = "<group>";
+		};
 		75F65BD4681690078A8C6410 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -114,6 +149,10 @@
 		82796DE5256923ED00443E2F /* Sources */ = {
 			isa = PBXGroup;
 			children = (
+				6A8667692598D16F00FE8031 /* Repository */,
+				6A8667672598D0DD00FE8031 /* APIClient */,
+				6A6DC2F9259637A500191F29 /* Entities */,
+				6A8667682598D12500FE8031 /* Model */,
 				82796E132569354A00443E2F /* Home */,
 				D848D49D2568190F008CA221 /* SceneDelegate.swift */,
 				D848D49B2568190F008CA221 /* AppDelegate.swift */,
@@ -134,16 +173,9 @@
 		82796E132569354A00443E2F /* Home */ = {
 			isa = PBXGroup;
 			children = (
-				6A6DC2F9259637A500191F29 /* Entities */,
+				6A86676A2598D1AD00FE8031 /* Cell */,
 				82796DEE2569247500443E2F /* HomeViewController.xib */,
-				6ACDDDC2256BE65F004E12E3 /* ArticleTableViewCell.xib */,
-				6AA0A2512579181900A99393 /* APIClient.swift */,
 				82796DED2569247500443E2F /* HomeViewController.swift */,
-				6ACDDDC1256BE65F004E12E3 /* ArticleTableViewCell.swift */,
-				6A92D40A25728F3200256220 /* NewsDataModel.swift */,
-				6A5F2E89257D13C200D5DB4A /* NewsArticleRepository.swift */,
-				6A6DC2FA25963EF600191F29 /* NewsAPIRequest.swift */,
-				6A6DC2FE25973B0B00191F29 /* Requestable.swift */,
 			);
 			path = Home;
 			sourceTree = "<group>";
