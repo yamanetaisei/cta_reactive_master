@@ -9,7 +9,13 @@ import Foundation
 
 enum Key {
     static var newsApi: String {
-        let value: String = "30d06e4f9a934402a204fa89f9d9acfc"
+        guard let filePath = Bundle.main.path(forResource: "APIKey", ofType: "plist") else {
+            fatalError("Couldn't find file 'APIKey.plist'")
+        }
+        let plist = NSDictionary(contentsOfFile: filePath)
+        guard let value = plist?.object(forKey: "newsAPIKey") as? String else {
+            fatalError("Couldn't find key 'newsAPIKey' in 'APIKey.plist'")
+        }
         return value
     }
 }
