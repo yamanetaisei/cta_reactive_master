@@ -21,7 +21,7 @@ struct NewsArticleRepository: Repository {
     typealias Response = NewsDataModel
     
     func fetch() -> Observable<NewsDataModel> {
-        let request = NewsAPIRequest(endpoint: .topHeadline(country: .jp, category: .health))
+        let request = NewsAPIRequest(endpoint: .topHeadline(country: .jp, category: .business))
         return apiClient.request(request)
     }
 }
