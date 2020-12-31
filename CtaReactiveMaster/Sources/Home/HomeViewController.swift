@@ -8,6 +8,7 @@
 import UIKit
 import RxSwift
 import RxCocoa
+import SafariServices
 
 final class HomeViewController: UIViewController {
 
@@ -71,7 +72,14 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "ArticleTableViewCell", for: indexPath) as! ArticleTableViewCell
-        cell.titleLabel.text = articles[indexPath.row].title
+        cell.configure(article: articles[indexPath.row])
         return cell
     }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        guard let articleUrl = URL(string: articles[indexPath.row].url) else { return }
+        let safariVC = SFSafariViewController(url: articleUrl)
+        present(safariVC, animated: true)
+    }
 }
+
