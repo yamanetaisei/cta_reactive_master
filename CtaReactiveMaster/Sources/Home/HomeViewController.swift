@@ -23,7 +23,7 @@ final class HomeViewController: UIViewController {
     private let disposeBag = DisposeBag()
     private let refreshControl = UIRefreshControl()
     private let viewModel: HomeViewModel
-    private var activityIndicatorView = UIActivityIndicatorView()
+    private var activityIndicatorView = UIActivityIndicatorView(style: .large)
     
     init(viewModel: HomeViewModel) {
         self.viewModel = viewModel
@@ -37,6 +37,12 @@ final class HomeViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         viewModel.fetch()
+        activityIndicatorView.hidesWhenStopped = true
+        DispatchQueue.main.async {
+            self.activityIndicatorView.center = self.view.center
+            self.view.addSubview(self.activityIndicatorView)
+            self.activityIndicatorView.startAnimating()
+        }
         
         refreshControl.rx.controlEvent(.valueChanged)
             .subscribe(onNext: { [weak self] in
@@ -59,6 +65,10 @@ final class HomeViewController: UIViewController {
             } onError: { error in
                 print(error)
             }
+            .disposed(by: disposeBag)
+        
+        viewModel.output.showLoading
+            .bind(to: activityIndicatorView.rx.isAnimating)
             .disposed(by: disposeBag)
     }
 }

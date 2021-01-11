@@ -16,13 +16,12 @@ struct HomeViewModel {
 
     struct HomeViewModelOutput {
         let articles = BehaviorRelay<[Article]>(value: [])
-        let showLoading = BehaviorRelay<Bool>(value: true)
+        let showLoading = BehaviorRelay<Bool>(value: false)
     }
 
     let dependency: Dependency
     let disposeBag = DisposeBag()
     let output = HomeViewModelOutput()
-    let indicator = UIActivityIndicatorView()
 
     func fetch() {
         output.showLoading.accept(true)
@@ -31,6 +30,11 @@ struct HomeViewModel {
             .map(\.articles)
             .bind(to: output.articles)
             .disposed(by: disposeBag)
-        output.showLoading.accept(false)
+            
+        output.articles
+            .subscribe() {articles in
+                output.showLoading.accept(false)
+            }
+            .disposed(by: disposeBag)
     }
 }
