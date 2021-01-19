@@ -23,7 +23,7 @@ final class HomeViewController: UIViewController {
     private let disposeBag = DisposeBag()
     private let refreshControl = UIRefreshControl()
     private let viewModel: HomeViewModel
-    private var activityIndicatorView = UIActivityIndicatorView(style: .large)
+    private let activityIndicatorView = UIActivityIndicatorView(style: .large)
     
     init(viewModel: HomeViewModel) {
         self.viewModel = viewModel

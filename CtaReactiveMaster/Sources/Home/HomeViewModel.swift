@@ -22,6 +22,36 @@ struct HomeViewModel {
     let dependency: Dependency
     let disposeBag = DisposeBag()
     let output = HomeViewModelOutput()
+        
+    init(dependency: Dependency) {
+        self.dependency = dependency
+        
+        output.articles
+            .subscribe() { [self] articles in
+                output.articles
+                    .materialize()
+                    .flatMap { $0.element.map(Observable.just) ?? .empty() }
+                    .do(onNext: { [self] _ in
+                        output.showLoading.accept(false)
+                    })
+                    .subscribe()
+                    .disposed(by: disposeBag)
+            }
+            .disposed(by: disposeBag)
+        
+        output.articles
+            .subscribe() { [self] articles in
+                output.articles
+                    .materialize()
+                    .flatMap { $0.error.map(Observable.just) ?? .empty() }
+                    .do(onNext: { [self] _ in
+                        output.showLoading.accept(false)
+                    })
+                    .subscribe()
+                    .disposed(by: disposeBag)
+            }
+            .disposed(by: disposeBag)
+    }
 
     func fetch() {
         output.showLoading.accept(true)
@@ -29,12 +59,6 @@ struct HomeViewModel {
             .asObservable()
             .map(\.articles)
             .bind(to: output.articles)
-            .disposed(by: disposeBag)
-            
-        output.articles
-            .subscribe() {articles in
-                output.showLoading.accept(false)
-            }
             .disposed(by: disposeBag)
     }
 }
