@@ -25,19 +25,8 @@ struct HomeViewModel {
         
     init(dependency: Dependency) {
         self.dependency = dependency
-        
         output.articles
             .materialize()
-            .flatMap { $0.element.map(Observable.just) ?? .empty() }
-            .do(onNext: { [self] _ in
-                output.showLoading.accept(false)
-            })
-            .subscribe()
-            .disposed(by: disposeBag)
-        
-        output.articles
-            .materialize()
-            .flatMap { $0.error.map(Observable.just) ?? .empty() }
             .do(onNext: { [self] _ in
                 output.showLoading.accept(false)
             })

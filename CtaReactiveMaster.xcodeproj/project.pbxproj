@@ -142,6 +142,22 @@
 			path = Cell;
 			sourceTree = "<group>";
 		};
+		6AC7AF4E25BC2DD800B074BF /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				6AAABEB8259B7D5A008F9825 /* UIImageView+Extension.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
+		6AC7AF4F25BC2DFC00B074BF /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				6AA340C425A31E3000E8827F /* HomeViewModel.swift */,
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
 		75F65BD4681690078A8C6410 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -155,6 +171,8 @@
 		82796DE5256923ED00443E2F /* Sources */ = {
 			isa = PBXGroup;
 			children = (
+				6AC7AF4F25BC2DFC00B074BF /* ViewModels */,
+				6AC7AF4E25BC2DD800B074BF /* Extensions */,
 				6A8667692598D16F00FE8031 /* Repository */,
 				6A8667672598D0DD00FE8031 /* APIClient */,
 				6A6DC2F9259637A500191F29 /* Entities */,
@@ -183,7 +201,6 @@
 				6A86676A2598D1AD00FE8031 /* Cell */,
 				82796DEE2569247500443E2F /* HomeViewController.xib */,
 				82796DED2569247500443E2F /* HomeViewController.swift */,
-				6AA340C425A31E3000E8827F /* HomeViewModel.swift */,
 			);
 			path = Home;
 			sourceTree = "<group>";
@@ -213,7 +230,6 @@
 			children = (
 				82796DE6256923F700443E2F /* Resources */,
 				82796DE5256923ED00443E2F /* Sources */,
-				6AAABEB8259B7D5A008F9825 /* UIImageView+Extension.swift */,
 			);
 			path = CtaReactiveMaster;
 			sourceTree = "<group>";
