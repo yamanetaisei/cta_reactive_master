@@ -20,13 +20,13 @@ final class HomeViewController: UIViewController {
             tableView.refreshControl = refreshControl
         }
     }
-    private var articles: [Article] = .init()
     private let disposeBag = DisposeBag()
     private let refreshControl = UIRefreshControl()
-    private let repository: NewsArticleRepository
+    private let viewModel: HomeViewModel
+    private let activityIndicatorView = UIActivityIndicatorView(style: .large)
     
-    init(repository: NewsArticleRepository) {
-        self.repository = repository
+    init(viewModel: HomeViewModel) {
+        self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -36,24 +36,28 @@ final class HomeViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        fetch()
-
+        viewModel.fetch()
+        activityIndicatorView.hidesWhenStopped = true
+        DispatchQueue.main.async {
+            self.activityIndicatorView.center = self.view.center
+            self.view.addSubview(self.activityIndicatorView)
+            self.activityIndicatorView.startAnimating()
+        }
+        
         refreshControl.rx.controlEvent(.valueChanged)
             .subscribe(onNext: { [weak self] in
-                self?.fetch()
+                self?.viewModel.fetch()
             },
             onError: { error in
                 print(error)
             })
             .disposed(by: disposeBag)
-    }
-    
-    private func fetch() {
-        repository.fetch()
+        
+        viewModel.output.articles
+            .subscribeOn(SerialDispatchQueueScheduler(qos: .background))
             .observeOn(MainScheduler.instance)
             .subscribe { [weak self] response in
                 guard let self = self else { return }
-                self.articles = response.articles
                 self.tableView.reloadData()
                 if self.refreshControl.isRefreshing {
                     self.refreshControl.endRefreshing()
@@ -62,22 +66,26 @@ final class HomeViewController: UIViewController {
                 print(error)
             }
             .disposed(by: disposeBag)
+        
+        viewModel.output.showLoading
+            .bind(to: activityIndicatorView.rx.isAnimating)
+            .disposed(by: disposeBag)
     }
 }
 
 extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        articles.count
+        viewModel.output.articles.value.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "ArticleTableViewCell", for: indexPath) as! ArticleTableViewCell
-        cell.configure(article: articles[indexPath.row])
+        cell.configure(article: viewModel.output.articles.value[indexPath.row])
         return cell
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        guard let articleUrl = URL(string: articles[indexPath.row].url) else { return }
+        guard let articleUrl = URL(string: viewModel.output.articles.value[indexPath.row].url) else { return }
         let safariVC = SFSafariViewController(url: articleUrl)
         present(safariVC, animated: true)
     }
