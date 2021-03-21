@@ -15,4 +15,4 @@ CA Tech AccelでiOSアプリ開発におけるReactiveを理解していく学�
 [RxSwift](https://github.com/ReactiveX/RxSwift)
 
 ## アーキテクチャ
-MVVVM
+MVVM
