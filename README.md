@@ -14,5 +14,8 @@ CA Tech AccelでiOSアプリ開発におけるReactiveを理解していく学�
 
 [RxSwift](https://github.com/ReactiveX/RxSwift)
 
+## 使用API
+[NewsAPI](https://newsapi.org/)
+
 ## アーキテクチャ
 MVVM
